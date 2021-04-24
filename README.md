@@ -65,3 +65,35 @@ Antes de implementar las historias de usuario, realizamos los siguientes campbio
 * Fijar UTC como timezone de la aplicacion.
 * Usar enumerados para *Tipo de Anuncion* y *Resolución de foto*.
 * Configuración con propiedades en lugar de yaml.
+
+## Requisitos
+Estos son los requisitos que implementa la aplicacion, basandonos en las historias ed usuario:
+
+* Calculo del valor Ranking de un anuncio
+    * -10 puntos si no tiene ninguna foto
+    * 20 puntos X foto de alta resolución (HD)
+    * 10 puntos X foto no alta resolución.
+    * 5 puntos por descripción
+    * 5 puntos cuando estas palabras aparezca en la descripción:
+        * Luminoso,
+        * Nuevo,
+        * Céntrico,
+        * Reformado,
+        * Ático.
+    * Para tipo pisos:
+        * 10 puntos si la descripción tiene entre 20 y 49 palabras, o
+        * 30 puntos si tiene 50 o mas palabras.
+        * 40 puntos si esta completo:
+            * tiene descripción,
+            * al menos una foto, y
+            * tamaño de vivienda.
+    * Para tipo chalets,
+        * 20 puntos si tiene mas de 50 palabras.
+        * 40 puntos si esta completo:
+            * tiene descripción,
+            * al menos una foto,
+            * tamaño de vivienda, y
+            * tamaño de jardín.
+    * Para tipo garajes
+        * 40 puntos si esta completo:
+            * al menos una foto.

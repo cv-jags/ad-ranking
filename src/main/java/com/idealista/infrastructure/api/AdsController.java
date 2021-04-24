@@ -3,26 +3,31 @@ package com.idealista.infrastructure.api;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 public class AdsController {
 
-    //TODO añade url del endpoint
+    private final AdService adService;
+
+    @GetMapping("/quality")
     public ResponseEntity<List<QualityAd>> qualityListing() {
-        //TODO rellena el cuerpo del método
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(adService.getQualityAds());
     }
 
-    //TODO añade url del endpoint
+    @GetMapping("/")
     public ResponseEntity<List<PublicAd>> publicListing() {
-        //TODO rellena el cuerpo del método
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(adService.getPublicAds());
     }
 
-    //TODO añade url del endpoint
+    @PostMapping("/score")
     public ResponseEntity<Void> calculateScore() {
-        //TODO rellena el cuerpo del método
-        return ResponseEntity.notFound().build();
+        adService.triggerScoreUpdate();
+        return ResponseEntity.ok().build();
     }
 }

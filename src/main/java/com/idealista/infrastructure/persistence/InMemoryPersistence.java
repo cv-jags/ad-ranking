@@ -41,4 +41,24 @@ public class InMemoryPersistence {
         pictures.add(new PictureVO(7, "http://www.idealista.com/pictures/7", "SD"));
         pictures.add(new PictureVO(8, "http://www.idealista.com/pictures/8", "HD"));
     }
+
+    public AdVO save(AdVO instance) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Iterable<AdVO> saveAll(Iterable<AdVO> iterable) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<AdVO> findAll() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<AdVO> findByScoreGreaterThan(int i) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
