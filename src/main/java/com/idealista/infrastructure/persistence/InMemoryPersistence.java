@@ -4,9 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Repository;
+
+import com.google.common.collect.Lists;
 
 @Repository
 public class InMemoryPersistence {
@@ -44,32 +50,49 @@ public class InMemoryPersistence {
     }
 
     public AdVO save(AdVO instance) {
-        // TODO Auto-generated method stub
-        return null;
+        ads.stream().filter(a -> a.getId().equals(instance.getId())).findAny().map(ads::remove);
+        ads.add(cloningAdStrategy().apply(instance));
+        return instance;
     }
 
     public Iterable<AdVO> saveAll(Iterable<AdVO> iterable) {
-        // TODO Auto-generated method stub
-        return null;
+        return StreamSupport.stream(iterable.spliterator(), false)
+                .map(this::save)
+                .collect(Collectors.toList());
     }
 
     public Optional<AdVO> findById(Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+        return ads.stream().filter(a -> a.getId().equals(id)).findAny().map(cloningAdStrategy());
     }
 
     public List<AdVO> findAll() {
-        // TODO Auto-generated method stub
-        return null;
+        return ads.stream().map(cloningAdStrategy()).collect(Collectors.toList());
     }
 
     public List<AdVO> findByScoreGreaterThanOrEqual(int i) {
-        // TODO Auto-generated method stub
-        return null;
+        return ads.stream()
+                .filter(a -> isScoreGreaterThan(a, i))
+                .map(cloningAdStrategy())
+                .collect(Collectors.toList());
     }
 
     public List<PictureVO> findPictureById(Iterable<Integer> pictureIds) {
-        // TODO Auto-generated method stub
-        return null;
+        List<Integer> ids = Lists.newArrayList(pictureIds);
+        return pictures.stream()
+                .filter(p -> ids.contains(p.getId()))
+                .map(cloningPictureStrategy())
+                .collect(Collectors.toList());
+    }
+
+    private boolean isScoreGreaterThan(AdVO ad, int i) {
+        return !Objects.isNull(ad.getScore()) && ad.getScore() >= i;
+    }
+
+    private Function<? super AdVO, ? extends AdVO> cloningAdStrategy() {
+        return AdVO::clone;
+    }
+
+    private Function<? super PictureVO, ? extends PictureVO> cloningPictureStrategy() {
+        return PictureVO::clone;
     }
 }

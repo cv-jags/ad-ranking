@@ -18,4 +18,12 @@ public class PictureVO implements Cloneable,Serializable {
     private Integer id;
     private String url;
     private String quality;
+
+    public PictureVO clone() {
+        try {
+            return (PictureVO) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -25,6 +25,12 @@ public class AdVO implements Cloneable, Serializable {
     private Integer gardenSize;
     private Integer score;
     private Timestamp irrelevantSince;
+
+    public AdVO clone() {
+        try {
+            return (AdVO) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
-
-
