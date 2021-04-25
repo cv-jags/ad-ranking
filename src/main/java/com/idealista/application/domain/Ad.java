@@ -2,6 +2,7 @@ package com.idealista.application.domain;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,4 +23,8 @@ public class Ad {
     private Integer gardenSize;
     private Integer score;
     private Timestamp irrelevantSince;
+
+    public void addScore(int puntuation) {
+        score = Objects.isNull(score) ? puntuation : (score + puntuation);
+    }
 }

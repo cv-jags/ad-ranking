@@ -168,14 +168,14 @@ public class InMemoryPersistenceAdapterTest {
         return adVo;
     }
 
-    private Ad buildCompleteAd(Timestamp now) {
+    private Ad buildCompleteAd(Timestamp timestamp) {
         Ad ad = Ad.builder()
                 .id(1)
                 .description("description")
                 .typology(AdType.FLAT)
                 .houseSize(90)
                 .gardenSize(5)
-                .irrelevantSince(now)
+                .irrelevantSince(timestamp)
                 .score(50)
                 .pictures(Lists.newArrayList(
                         Picture.builder()

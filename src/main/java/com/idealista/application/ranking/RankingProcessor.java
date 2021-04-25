@@ -2,7 +2,7 @@ package com.idealista.application.ranking;
 
 import com.idealista.application.domain.Ad;
 
-public interface RankingProcesor {
+public interface RankingProcessor {
 
     /**
      * Evaluate if the processor affects the ranking of the add
@@ -13,8 +13,8 @@ public interface RankingProcesor {
 
     /**
      * Calculate an aspect of ranking on the Ad and updates the ad ranking
-     * @param add to evaluate and update
+     * @param ad to evaluate and update
      */
-    void process(Ad add);
+    void process(Ad ad);
 
 }
