@@ -96,4 +96,5 @@ Estos son los requisitos que implementa la aplicacion, basandonos en las histori
             * tamaño de jardín.
     * Para tipo garajes
         * 40 puntos si esta completo:
-            * al menos una foto.
+            * al menos una foto, y
+            * tamaño de vivienda.

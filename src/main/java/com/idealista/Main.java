@@ -43,12 +43,15 @@ public class Main {
         private int hdPhotoScore = 20;
         private int hasDescription = 5;
         private int highlightWordsScore = 5;
-        private int flatMediumDescription = 10;
-        private int flatLargeDescription = 30;
-        private int flatComplete = 40;
-        private int chaletLargeDescription = 20;
-        private int chaletComplete = 40;
-        private int garageComplete = 40;
+        private int flatMediumDescriptionMin = 20;
+        private int flatMediumDescriptionScore = 10;
+        private int flatLargeDescriptionMin = 50;
+        private int flatLargeDescriptionScore = 30;
+        private int flatCompleteScore = 40;
+        private int chaletLargeDescriptionMin = 20;
+        private int chaletLargeDescriptionScore = 20;
+        private int chaletCompleteScore = 40;
+        private int garageCompleteScore = 40;
         private Set<String> highlightWords = Sets.newHashSet("Luminoso", "Nuevo", "Céntrico",
                 "Reformado", "Ático");
 
