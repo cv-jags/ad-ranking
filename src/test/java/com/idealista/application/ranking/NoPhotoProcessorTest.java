@@ -1,19 +1,12 @@
 package com.idealista.application.ranking;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.sql.Timestamp;
 import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,12 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.google.common.collect.Lists;
 import com.idealista.Main.RankingConfiguration;
-import com.idealista.application.UpdateAllAdScoreByProcessors;
 import com.idealista.application.domain.Ad;
-import com.idealista.application.domain.AdType;
 import com.idealista.application.domain.Picture;
-import com.idealista.application.domain.PictureQuality;
-import com.idealista.testing.FirstArgumentAnswer;
 
 @ExtendWith(MockitoExtension.class)
 public class NoPhotoProcessorTest {
