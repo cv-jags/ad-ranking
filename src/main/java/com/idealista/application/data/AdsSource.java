@@ -6,9 +6,9 @@ import com.idealista.application.domain.Ad;
 
 public interface AdsSource {
 
-    void updateScore(Ad newScore);
+    Integer updateScore(Ad newScore);
 
-    void updateScores(Iterable<Ad> newScores);
+    List<Integer> updateScores(Iterable<Ad> newScores);
 
     List<Ad> findAll();
 

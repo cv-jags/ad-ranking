@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -52,12 +53,22 @@ public class InMemoryPersistence {
         return null;
     }
 
+    public Optional<AdVO> findById(Integer id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     public List<AdVO> findAll() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public List<AdVO> findByScoreGreaterThan(int i) {
+    public List<AdVO> findByScoreGreaterThanOrEqual(int i) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<PictureVO> findPictureById(Iterable<Integer> pictureIds) {
         // TODO Auto-generated method stub
         return null;
     }

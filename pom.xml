@@ -24,6 +24,7 @@
 
 		<logstash-logback-encoder.version>4.11</logstash-logback-encoder.version>
 		<guava.version>30.1.1-jre</guava.version>
+
 		<maven-resources-plugin.version>3.0.1</maven-resources-plugin.version>
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
 		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
