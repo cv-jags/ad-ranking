@@ -69,7 +69,7 @@ public class InMemoryPersistence {
         return ads.stream().map(cloningAdStrategy()).collect(Collectors.toList());
     }
 
-    public List<AdVO> findByScoreGreaterThanOrEqual(int i) {
+    public List<AdVO> findByScoreGreaterThanOrEqualTo(int i) {
         return ads.stream()
                 .filter(a -> isScoreGreaterThan(a, i))
                 .map(cloningAdStrategy())

@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import com.google.common.collect.Lists;
 import com.idealista.application.domain.Ad;
@@ -30,6 +29,8 @@ import com.idealista.testing.FirstArgumentAnswer;
 @ExtendWith(MockitoExtension.class)
 public class InMemoryPersistenceAdapterTest {
 
+    private static final int RELEVANT_SCORE = 40;
+
     private InMemoryPersistenceAdapter adapter;
 
     @Mock
@@ -40,7 +41,6 @@ public class InMemoryPersistenceAdapterTest {
     @BeforeEach
     public void beforeEach() {
         adapter = new InMemoryPersistenceAdapter(persistence);
-        ReflectionTestUtils.setField(adapter, "relevantScore", 40);
     }
 
     @Test
@@ -120,15 +120,15 @@ public class InMemoryPersistenceAdapterTest {
     public void findRelevant_ReturnsAllTransformedResultsFromPersistenceWith40OrMoreScore() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         AdVO adVo = buildCompleteAdVO(now);
-        when(persistence.findByScoreGreaterThanOrEqual(40)).thenReturn(Lists.newArrayList(adVo));
+        when(persistence.findByScoreGreaterThanOrEqualTo(40)).thenReturn(Lists.newArrayList(adVo));
         when(persistence.findPictureById(any()))
                 .thenReturn(Lists.newArrayList(buildPicture(1, "SD"), buildPicture(2, "HD")));
 
-        List<Ad> result = adapter.findRelevant();
+        List<Ad> result = adapter.findByScoreGreaterThanOrEqualTo(RELEVANT_SCORE);
 
         Ad ad = buildCompleteAd(now);
         assertEquals(Lists.newArrayList(ad), result);
-        verify(persistence).findByScoreGreaterThanOrEqual(40);
+        verify(persistence).findByScoreGreaterThanOrEqualTo(40);
         verify(persistence).findPictureById(Lists.newArrayList(1, 2));
         verifyNoMoreInteractions(persistence);
     }

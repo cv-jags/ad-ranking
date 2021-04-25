@@ -91,7 +91,7 @@ public class InMemoryPersistenceTest {
     @Test
     void findByScoreGreaterThanOrEqual_ReturnsEmptyIfNoScore() {
 
-        List<AdVO> result = persistence.findByScoreGreaterThanOrEqual(10);
+        List<AdVO> result = persistence.findByScoreGreaterThanOrEqualTo(10);
 
         assertTrue(result.isEmpty());
     }
@@ -101,7 +101,7 @@ public class InMemoryPersistenceTest {
         adsStore.get(1).setScore(40);
         adsStore.get(7).setScore(80);
 
-        List<AdVO> result = persistence.findByScoreGreaterThanOrEqual(10);
+        List<AdVO> result = persistence.findByScoreGreaterThanOrEqualTo(10);
 
         assertEquals(2, result.size());
         assertEquals(adsStore.get(1), result.get(0));

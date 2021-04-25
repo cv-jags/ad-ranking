@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.idealista.application.data.AdsSource;
@@ -24,18 +23,6 @@ public class InMemoryPersistenceAdapter implements AdsSource {
 
     private final InMemoryPersistence persistence;
 
-    @Value("${add.relevant.score}:40")
-    private int relevantScore;
-
-    @Override
-    public Integer updateScore(Ad newScore) {
-        log.debug("Updating ad score: ", newScore);
-        AdVO adToUpdate = persistence.findById(newScore.getId())
-                .orElseThrow(() -> new IllegalArgumentException("No ad found"));
-        adToUpdate.setScore(newScore.getScore());
-        return persistence.save(adToUpdate).getId();
-    }
-
     @Override
     public List<Integer> updateScores(Iterable<Ad> newScores) {
         log.debug("Updating ad scores: ", newScores);
@@ -53,10 +40,18 @@ public class InMemoryPersistenceAdapter implements AdsSource {
     }
 
     @Override
-    public List<Ad> findRelevant() {
-        log.debug("Finding relevant adds");
+    public List<Ad> findByScoreGreaterThanOrEqualTo(int score) {
+        log.debug("Finding by score greater than or equal to {}", score);
+        return transformFrom(persistence.findByScoreGreaterThanOrEqualTo(score));
+    }
 
-        return transformFrom(persistence.findByScoreGreaterThanOrEqual(relevantScore));
+    public Integer updateScore(Ad newScore) {
+        log.debug("Updating ad score: ", newScore);
+        AdVO adToUpdate = persistence.findById(newScore.getId())
+                .orElseThrow(() -> new IllegalArgumentException("No ad found"));
+        adToUpdate.setScore(newScore.getScore());
+        adToUpdate.setIrrelevantSince(newScore.getIrrelevantSince());
+        return persistence.save(adToUpdate).getId();
     }
 
     private Optional<Integer> updateScoreSafe(Ad ad) {
