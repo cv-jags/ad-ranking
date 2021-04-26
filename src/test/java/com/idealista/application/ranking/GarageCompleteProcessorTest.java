@@ -20,9 +20,10 @@ import com.idealista.application.domain.AdType;
 import com.idealista.application.domain.Picture;
 
 @ExtendWith(MockitoExtension.class)
-public class GarageProcessorTest {
+public class GarageCompleteProcessorTest {
 
-    private GarageProcessor processor;
+
+    private GarageCompleteProcessor processor;
 
     @Mock
     private RankingConfiguration config;
@@ -31,48 +32,53 @@ public class GarageProcessorTest {
 
     @BeforeEach
     public void beforeEach() {
-        processor = new GarageProcessor(config);
+        processor = new GarageCompleteProcessor(config);
     }
 
     @Test
-    public void accept_ReturnsFalseWhenAdIsNotChalet() {
+    public void accept_ReturnsFalseWhenAdIsNotGarage() {
         assertFalse(processor.accept(Ad.builder().typology(null).build()));
         assertFalse(processor.accept(Ad.builder().typology(AdType.CHALET).build()));
         assertFalse(processor.accept(Ad.builder().typology(AdType.FLAT).build()));
     }
 
-    @Test
-    public void accept_ReturnsTrueWhenAdHasDescriptionText() {
-        assertTrue(processor.accept(Ad.builder().typology(AdType.GARAGE).build()));
-    }
 
     @Test
-    public void process_DoesNotAddsScoreWhenGarageAndPicturesIsNull() {
+    public void accept_ReturnsFalseWhenPicturesIsNull() {
+        when(mockAd.getTypology()).thenReturn(AdType.GARAGE);
+        when(mockAd.getPictures()).thenReturn(null);
 
-        processor.process(mockAd);
 
+        boolean result = processor.accept(mockAd);
+
+        assertFalse(result);
         verify(mockAd).getPictures();
         verifyNoMoreInteractions(mockAd);
         verifyNoInteractions(config);
     }
 
     @Test
-    public void process_DoesNotAddsScoreWhenGarageDoesNotHaveAnyPicture() {
+    public void accept_ReturnsFalseWhenPicturesIsEmpty() {
+        when(mockAd.getTypology()).thenReturn(AdType.GARAGE);
         when(mockAd.getPictures()).thenReturn(Lists.newArrayList());
 
-        processor.process(mockAd);
+        boolean result = processor.accept(mockAd);
 
+        assertFalse(result);
         verify(mockAd).getPictures();
         verifyNoMoreInteractions(mockAd);
         verifyNoInteractions(config);
     }
 
     @Test
-    public void process_DoesNotAddsScoreWhenGarageDoesNotHaveSize() {
+    public void accept_ReturnsFalseWhenAdHasPicturesButHouseSizeIsNull() {
+        when(mockAd.getTypology()).thenReturn(AdType.GARAGE);
         when(mockAd.getPictures()).thenReturn(Lists.newArrayList(Picture.builder().build()));
+        when(mockAd.getHouseSize()).thenReturn(null);
 
-        processor.process(mockAd);
+        boolean result = processor.accept(mockAd);
 
+        assertFalse(result);
         verify(mockAd).getPictures();
         verify(mockAd).getHouseSize();
         verifyNoMoreInteractions(mockAd);
@@ -80,12 +86,14 @@ public class GarageProcessorTest {
     }
 
     @Test
-    public void process_DoesNotAddsScoreWhenGarageHave0Size() {
+    public void accept_ReturnsFalseWhenAdHasPicturesAndHouseSizeIs0() {
+        when(mockAd.getTypology()).thenReturn(AdType.GARAGE);
         when(mockAd.getPictures()).thenReturn(Lists.newArrayList(Picture.builder().build()));
         when(mockAd.getHouseSize()).thenReturn(0);
 
-        processor.process(mockAd);
+        boolean result = processor.accept(mockAd);
 
+        assertFalse(result);
         verify(mockAd).getPictures();
         verify(mockAd).getHouseSize();
         verifyNoMoreInteractions(mockAd);
@@ -93,10 +101,23 @@ public class GarageProcessorTest {
     }
 
     @Test
-    public void process_AddsCompleteScoreWhenGarageIsComplete() {
-        when(config.getGarageCompleteScore()).thenReturn(40);
-        when(mockAd.getHouseSize()).thenReturn(15);
+    public void accept_ReturnsTrueWhenAdHasPicturesAndHouseSizeIsGreaterThan0() {
+        when(mockAd.getTypology()).thenReturn(AdType.GARAGE);
         when(mockAd.getPictures()).thenReturn(Lists.newArrayList(Picture.builder().build()));
+        when(mockAd.getHouseSize()).thenReturn(150);
+
+        boolean result = processor.accept(mockAd);
+
+        assertTrue(result);
+        verify(mockAd).getPictures();
+        verify(mockAd).getHouseSize();
+        verifyNoMoreInteractions(mockAd);
+        verifyNoInteractions(config);
+    }
+
+    @Test
+    public void process_AddsCompleteScoreWhenIsComplete() {
+        when(config.getGarageCompleteScore()).thenReturn(40);
 
         processor.process(mockAd);
 

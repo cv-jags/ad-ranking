@@ -149,7 +149,7 @@ public class FlatCompleteProcessorTest {
     }
 
     @Test
-    public void process_AddsCompleteScoreWhenChaletIsComplete() {
+    public void process_AddsCompleteScoreWhenIsComplete() {
         when(config.getFlatCompleteScore()).thenReturn(40);
 
         processor.process(mockAd);

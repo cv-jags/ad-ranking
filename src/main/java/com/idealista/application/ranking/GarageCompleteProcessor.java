@@ -14,20 +14,18 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class GarageProcessor implements RankingProcessor {
+public class GarageCompleteProcessor implements RankingProcessor {
 
     private final RankingConfiguration config;
 
     @Override
     public boolean accept(Ad ad) {
-        return AdType.GARAGE.equals(ad.getTypology());
+        return AdType.GARAGE.equals(ad.getTypology()) && isComplete(ad);
     }
 
     @Override
     public void process(Ad ad) {
-        if (isComplete(ad)) {
-            ad.addScore(config.getGarageCompleteScore());
-        }
+        ad.addScore(config.getGarageCompleteScore());
     }
 
     private boolean isComplete(Ad ad) {
