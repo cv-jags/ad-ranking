@@ -49,7 +49,7 @@ public class GetQualityAdsTest {
     }
 
     private Ad buildCompleteAd(Timestamp now) {
-        Ad ad = Ad.builder()
+        return Ad.builder()
                 .id(1)
                 .description("description")
                 .typology(AdType.FLAT)
@@ -69,6 +69,5 @@ public class GetQualityAdsTest {
                                 .quality(PictureQuality.HD)
                                 .build()))
                 .build();
-        return ad;
     }
 }
