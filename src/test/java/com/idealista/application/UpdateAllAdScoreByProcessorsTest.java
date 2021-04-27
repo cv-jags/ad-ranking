@@ -61,7 +61,7 @@ public class UpdateAllAdScoreByProcessorsTest {
         when(adsSource.findAll()).thenReturn(allAds);
         when(processor1.accept(any())).thenReturn(false);
         when(processor2.accept(any())).thenReturn(true);
-        doAnswer(updateScore()).when(processor2).process(any());
+        doAnswer(updateScore(SCORE_VALUE)).when(processor2).process(any());
         when(config.getRelevantScore()).thenReturn(SCORE_VALUE + 1);
 
         updateAllAdsScore.updateRanking();
@@ -85,7 +85,7 @@ public class UpdateAllAdScoreByProcessorsTest {
         when(adsSource.findAll()).thenReturn(allAds);
         when(processor1.accept(any())).thenReturn(false);
         when(processor2.accept(any())).thenReturn(true);
-        doAnswer(updateScore()).when(processor2).process(any());
+        doAnswer(updateScore(SCORE_VALUE)).when(processor2).process(any());
         when(config.getRelevantScore()).thenReturn(SCORE_VALUE + 1);
 
         updateAllAdsScore.updateRanking();
@@ -108,7 +108,7 @@ public class UpdateAllAdScoreByProcessorsTest {
         when(adsSource.findAll()).thenReturn(allAds);
         when(processor1.accept(any())).thenReturn(false);
         when(processor2.accept(any())).thenReturn(true);
-        doAnswer(updateScore()).when(processor2).process(any());
+        doAnswer(updateScore(SCORE_VALUE)).when(processor2).process(any());
         when(config.getRelevantScore()).thenReturn(SCORE_VALUE);
 
         updateAllAdsScore.updateRanking();
@@ -132,7 +132,7 @@ public class UpdateAllAdScoreByProcessorsTest {
         when(adsSource.findAll()).thenReturn(allAds);
         when(processor1.accept(any())).thenReturn(false);
         when(processor2.accept(any())).thenReturn(true);
-        doAnswer(updateScore()).when(processor2).process(any());
+        doAnswer(updateScore(SCORE_VALUE)).when(processor2).process(any());
         when(config.getRelevantScore()).thenReturn(SCORE_VALUE - 1);
 
         updateAllAdsScore.updateRanking();
@@ -148,11 +148,60 @@ public class UpdateAllAdScoreByProcessorsTest {
         verifyNoMoreInteractions(processor1, processor2, config, adsSource);
     }
 
-    private Answer<Void> updateScore() {
+    @Test
+    public void updateRanking_SetScoreAndIrrelevanceSinceWhenScoreIsGreaterThan100AndPreviousIrrelevantSince() {
+        Instant startingTime = Instant.now();
+        Ad ad = buildCompleteAd(startingTime);
+        ArrayList<Ad> allAds = Lists.newArrayList(ad);
+        when(adsSource.findAll()).thenReturn(allAds);
+        when(processor1.accept(any())).thenReturn(false);
+        when(processor2.accept(any())).thenReturn(true);
+        doAnswer(updateScore(150)).when(processor2).process(any());
+        when(config.getRelevantScore()).thenReturn(SCORE_VALUE - 1);
+
+        updateAllAdsScore.updateRanking();
+
+        assertEquals(new Integer(100), ad.getScore());
+        assertNull(ad.getIrrelevantSince());
+        verify(adsSource).findAll();
+        verify(adsSource).updateScores(allAds);
+        verify(processor1).accept(ad);
+        verify(processor2).accept(ad);
+        verify(processor2).process(ad);
+        verify(config).getRelevantScore();
+        verifyNoMoreInteractions(processor1, processor2, config, adsSource);
+    }
+
+
+    @Test
+    public void updateRanking_SetScoreAndIrrelevanceSinceWhenScoreIsBelow0() {
+        Instant startingTime = Instant.now();
+        Ad ad = buildCompleteAd(null);
+        ArrayList<Ad> allAds = Lists.newArrayList(ad);
+        when(adsSource.findAll()).thenReturn(allAds);
+        when(processor1.accept(any())).thenReturn(false);
+        when(processor2.accept(any())).thenReturn(true);
+        doAnswer(updateScore(-15)).when(processor2).process(any());
+        when(config.getRelevantScore()).thenReturn(SCORE_VALUE + 1);
+
+        updateAllAdsScore.updateRanking();
+
+        assertEquals(new Integer(0), ad.getScore());
+        assertTrue(ad.getIrrelevantSince().isAfter(startingTime));
+        verify(adsSource).findAll();
+        verify(adsSource).updateScores(allAds);
+        verify(processor1).accept(ad);
+        verify(processor2).accept(ad);
+        verify(processor2).process(ad);
+        verify(config).getRelevantScore();
+        verifyNoMoreInteractions(processor1, processor2, config, adsSource);
+    }
+
+    private Answer<Void> updateScore(int score) {
         return new Answer<Void>() {
             @Override
             public Void answer(InvocationOnMock arg0) throws Throwable {
-                Ad.class.cast(arg0.getArgument(0)).addScore(SCORE_VALUE);
+                Ad.class.cast(arg0.getArgument(0)).addScore(score);
                 return null;
             }
         };

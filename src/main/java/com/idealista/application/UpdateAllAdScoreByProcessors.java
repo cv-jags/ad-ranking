@@ -39,6 +39,7 @@ public class UpdateAllAdScoreByProcessors implements UpdateRanking {
         ad.setScore(0);
         processors.stream().filter(p -> p.accept(ad)).forEach(p -> p.process(ad));
         calculateIrrelevantSince(ad);
+        adjustScoreToRank(ad);
         return ad;
     }
 
@@ -49,6 +50,15 @@ public class UpdateAllAdScoreByProcessors implements UpdateRanking {
             }
         } else if (Objects.nonNull(ad.getIrrelevantSince())) {
             ad.setIrrelevantSince(null);
+        }
+    }
+
+    private void adjustScoreToRank(Ad ad) {
+        Integer score = ad.getScore();
+        if(score > 100) {
+            ad.setScore(100);
+        } else if(score < 0) {
+            ad.setScore(0);
         }
     }
 
