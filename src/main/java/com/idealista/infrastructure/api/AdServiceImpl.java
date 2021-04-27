@@ -99,7 +99,7 @@ public class AdServiceImpl implements AdService {
 
     protected Date getIrrelevantSince(Ad ad) {
         return Objects.nonNull(ad.getIrrelevantSince())
-                ? new Date(ad.getIrrelevantSince().getTime())
+                ? new Date(ad.getIrrelevantSince().toEpochMilli())
                 : null;
     }
 }

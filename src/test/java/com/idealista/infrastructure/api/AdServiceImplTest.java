@@ -7,7 +7,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -103,7 +103,7 @@ public class AdServiceImplTest {
 
     @Test
     public void getQualityAds_ReturnsQaAdsWhenGetQualityAdsReturnsAds() throws Exception {
-        Timestamp now = now();
+        Instant now = now();
         Ad completeAd = buildCompleteAd(now);
         when(getQualityAds.getAds()).thenReturn(Lists.newArrayList(completeAd, completeAd));
 
@@ -139,8 +139,8 @@ public class AdServiceImplTest {
         verifyNoInteractions(getUserAds, getQualityAds);
     }
 
-    protected Timestamp now() {
-        return new Timestamp(System.currentTimeMillis());
+    protected Instant now() {
+        return Instant.ofEpochMilli(System.currentTimeMillis());
     }
 
     private Ad buildEmptyAd() {
@@ -155,7 +155,7 @@ public class AdServiceImplTest {
         return QualityAd.builder().build();
     }
 
-    private Ad buildCompleteAd(Timestamp irrelevantSince) {
+    private Ad buildCompleteAd(Instant irrelevantSince) {
         return Ad.builder()
                 .id(1)
                 .description(DESCRIPTION)
@@ -189,7 +189,7 @@ public class AdServiceImplTest {
                 .build();
     }
 
-    private QualityAd buildQualityAd(Timestamp irrelevantSince) {
+    private QualityAd buildQualityAd(Instant irrelevantSince) {
         return QualityAd.builder()
                 .id(ID)
                 .description(DESCRIPTION)
@@ -198,7 +198,7 @@ public class AdServiceImplTest {
                 .gardenSize(GARDEN_SIZE)
                 .pictureUrls(Lists.newArrayList(PICTURE_URL_1, PICTURE_URL_2))
                 .score(50)
-                .irrelevantSince(new Date(irrelevantSince.getTime()))
+                .irrelevantSince(new Date(irrelevantSince.toEpochMilli()))
                 .build();
     }
 }

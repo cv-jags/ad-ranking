@@ -10,7 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class UpdateAllAdScoreByProcessorsTest {
 
     @Test
     public void updateRanking_SetScoreAndIrrelevanceSinceWhenScoreIsBelowRelevant() {
-        Timestamp startingTime = now();
+        Instant startingTime = Instant.now();
         Ad ad = buildCompleteAd(null);
         ArrayList<Ad> allAds = Lists.newArrayList(ad);
         when(adsSource.findAll()).thenReturn(allAds);
@@ -67,7 +67,7 @@ public class UpdateAllAdScoreByProcessorsTest {
         updateAllAdsScore.updateRanking();
 
         assertEquals(SCORE_VALUE, ad.getScore());
-        assertTrue(ad.getIrrelevantSince().after(startingTime));
+        assertTrue(ad.getIrrelevantSince().isAfter(startingTime));
         verify(adsSource).findAll();
         verify(adsSource).updateScores(allAds);
         verify(processor1).accept(ad);
@@ -79,7 +79,7 @@ public class UpdateAllAdScoreByProcessorsTest {
 
     @Test
     public void updateRanking_SetScoreAndIrrelevanceSinceWhenScoreIsBelowRelevantAndPreviousIrrelevantSince() {
-        Timestamp startingTime = now();
+        Instant startingTime = Instant.now();
         Ad ad = buildCompleteAd(startingTime);
         ArrayList<Ad> allAds = Lists.newArrayList(ad);
         when(adsSource.findAll()).thenReturn(allAds);
@@ -126,7 +126,7 @@ public class UpdateAllAdScoreByProcessorsTest {
 
     @Test
     public void updateRanking_SetScoreAndIrrelevanceSinceWhenScoreIsGreaterThanRelevantAndPreviousIrrelevantSince() {
-        Timestamp startingTime = now();
+        Instant startingTime = Instant.now();
         Ad ad = buildCompleteAd(startingTime);
         ArrayList<Ad> allAds = Lists.newArrayList(ad);
         when(adsSource.findAll()).thenReturn(allAds);
@@ -148,10 +148,6 @@ public class UpdateAllAdScoreByProcessorsTest {
         verifyNoMoreInteractions(processor1, processor2, config, adsSource);
     }
 
-    private Timestamp now() {
-        return new Timestamp(System.currentTimeMillis());
-    }
-
     private Answer<Void> updateScore() {
         return new Answer<Void>() {
             @Override
@@ -162,14 +158,14 @@ public class UpdateAllAdScoreByProcessorsTest {
         };
     }
 
-    private Ad buildCompleteAd(Timestamp timestamp) {
+    private Ad buildCompleteAd(Instant Instant) {
         Ad ad = Ad.builder()
                 .id(1)
                 .description("description")
                 .typology(AdType.FLAT)
                 .houseSize(90)
                 .gardenSize(5)
-                .irrelevantSince(timestamp)
+                .irrelevantSince(Instant)
                 .score(50)
                 .pictures(Lists.newArrayList(
                         Picture.builder()

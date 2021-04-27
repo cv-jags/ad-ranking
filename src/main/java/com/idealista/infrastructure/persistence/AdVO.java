@@ -1,7 +1,7 @@
 package com.idealista.infrastructure.persistence;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ public class AdVO implements Cloneable, Serializable {
     private Integer houseSize;
     private Integer gardenSize;
     private Integer score;
-    private Timestamp irrelevantSince;
+    private Instant irrelevantSince;
 
     public AdVO clone() {
         try {

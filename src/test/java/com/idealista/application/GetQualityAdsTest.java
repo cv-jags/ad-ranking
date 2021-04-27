@@ -5,7 +5,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class GetQualityAdsTest {
         verifyNoMoreInteractions(adsSource);
     }
 
-    private Ad buildCompleteAd(Timestamp now) {
+    private Ad buildCompleteAd(Instant now) {
         return Ad.builder()
                 .id(1)
                 .description("description")

@@ -1,6 +1,6 @@
 package com.idealista.application.domain;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,7 +22,7 @@ public class Ad {
     private Integer houseSize;
     private Integer gardenSize;
     private Integer score;
-    private Timestamp irrelevantSince;
+    private Instant irrelevantSince;
 
     public void addScore(int puntuation) {
         score = Objects.isNull(score) ? puntuation : (score + puntuation);

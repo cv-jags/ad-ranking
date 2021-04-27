@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +36,7 @@ public class InMemoryPersistenceTest {
 
     @Test
     public void save_AddsANewClonedElementIfIdIsNotPresentAndReturnsTheSame() {
-        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Instant now = Instant.ofEpochMilli(System.currentTimeMillis());
         AdVO newAdVo = buildCompleteAdVO(10, now);
 
         AdVO result = persistence.save(newAdVo);
@@ -49,7 +49,7 @@ public class InMemoryPersistenceTest {
 
     @Test
     public void save_ReplaceWithClonedElementIfIdIsPresentAndReturnsTheSame() {
-        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Instant now = Instant.ofEpochMilli(System.currentTimeMillis());
         AdVO newAdVo = buildCompleteAdVO(1, now);
 
         AdVO result = persistence.save(newAdVo);
@@ -135,7 +135,7 @@ public class InMemoryPersistenceTest {
         assertNotSame(pictures.get(4), result.get(1));
     }
 
-    private AdVO buildCompleteAdVO(Integer id, Timestamp now) {
+    private AdVO buildCompleteAdVO(Integer id, Instant now) {
         AdVO adVo = AdVO.builder()
                 .id(id)
                 .description("description")

@@ -9,7 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,7 +101,7 @@ public class InMemoryPersistenceAdapterTest {
 
     @Test
     public void findAll_ReturnsAllTransformedResultsFromPersistence() {
-        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Instant now = Instant.ofEpochMilli(System.currentTimeMillis());
         AdVO adVo = buildCompleteAdVO(now);
         when(persistence.findAll()).thenReturn(Lists.newArrayList(adVo, adVo));
         when(persistence.findPictureById(any()))
@@ -118,7 +118,7 @@ public class InMemoryPersistenceAdapterTest {
 
     @Test
     public void findRelevant_ReturnsAllTransformedResultsFromPersistenceWith40OrMoreScore() {
-        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Instant now = Instant.ofEpochMilli(System.currentTimeMillis());
         AdVO adVo = buildCompleteAdVO(now);
         when(persistence.findByScoreGreaterThanOrEqualTo(40)).thenReturn(Lists.newArrayList(adVo));
         when(persistence.findPictureById(any()))
@@ -154,7 +154,7 @@ public class InMemoryPersistenceAdapterTest {
                 .build();
     }
 
-    private AdVO buildCompleteAdVO(Timestamp now) {
+    private AdVO buildCompleteAdVO(Instant now) {
         AdVO adVo = AdVO.builder()
                 .id(1)
                 .description("description")
@@ -168,14 +168,14 @@ public class InMemoryPersistenceAdapterTest {
         return adVo;
     }
 
-    private Ad buildCompleteAd(Timestamp timestamp) {
+    private Ad buildCompleteAd(Instant Instant) {
         Ad ad = Ad.builder()
                 .id(1)
                 .description("description")
                 .typology(AdType.FLAT)
                 .houseSize(90)
                 .gardenSize(5)
-                .irrelevantSince(timestamp)
+                .irrelevantSince(Instant)
                 .score(50)
                 .pictures(Lists.newArrayList(
                         Picture.builder()

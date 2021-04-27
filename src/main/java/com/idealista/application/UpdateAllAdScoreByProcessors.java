@@ -1,6 +1,6 @@
 package com.idealista.application;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -13,7 +13,9 @@ import com.idealista.application.domain.Ad;
 import com.idealista.application.ranking.RankingProcessor;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UpdateAllAdScoreByProcessors implements UpdateRanking {
@@ -24,6 +26,7 @@ public class UpdateAllAdScoreByProcessors implements UpdateRanking {
 
     @Override
     public void updateRanking() {
+        log.info("Calculating ranking scores");
         List<Ad> updatedAds = adsSource.findAll()
                 .stream()
                 .map(this::calculateNewScore)
@@ -32,6 +35,7 @@ public class UpdateAllAdScoreByProcessors implements UpdateRanking {
     }
 
     private Ad calculateNewScore(Ad ad) {
+        log.info("Calculating score for ad: {}", ad);
         ad.setScore(0);
         processors.stream().filter(p -> p.accept(ad)).forEach(p -> p.process(ad));
         calculateIrrelevantSince(ad);
@@ -48,7 +52,7 @@ public class UpdateAllAdScoreByProcessors implements UpdateRanking {
         }
     }
 
-    private Timestamp now() {
-        return new Timestamp(System.currentTimeMillis());
+    private Instant now() {
+        return Instant.ofEpochMilli(System.currentTimeMillis());
     }
 }
