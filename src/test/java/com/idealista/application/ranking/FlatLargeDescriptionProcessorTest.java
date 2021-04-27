@@ -101,6 +101,7 @@ public class FlatLargeDescriptionProcessorTest {
 
         processor.process(mockAd);
 
+        verify(mockAd).getId();
         verify(mockAd).addScore(50);
         verify(config).getFlatLargeDescriptionScore();
         verifyNoMoreInteractions(mockAd, config);

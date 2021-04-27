@@ -9,6 +9,9 @@ import com.idealista.Main.RankingConfiguration;
 import com.idealista.application.domain.Ad;
 import com.idealista.application.domain.Picture;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class FlatCompleteProcessor extends FlatProcessor implements RankingProcessor {
 
@@ -23,7 +26,9 @@ public class FlatCompleteProcessor extends FlatProcessor implements RankingProce
 
     @Override
     public void process(Ad ad) {
-        ad.addScore(config.getFlatCompleteScore());
+        int flatCompleteScore = config.getFlatCompleteScore();
+        log.info("Scores {} for complete flat (ad: {})", flatCompleteScore, ad.getId());
+        ad.addScore(flatCompleteScore);
     }
 
     private boolean isComplete(Ad ad) {

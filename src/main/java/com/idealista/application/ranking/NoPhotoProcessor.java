@@ -8,7 +8,9 @@ import com.idealista.Main.RankingConfiguration;
 import com.idealista.application.domain.Ad;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class NoPhotoProcessor implements RankingProcessor {
@@ -22,7 +24,9 @@ public class NoPhotoProcessor implements RankingProcessor {
 
     @Override
     public void process(Ad ad) {
-        ad.addScore(rankingConfiguration.getNoPhotoScore());
+        int noPhotoScore = rankingConfiguration.getNoPhotoScore();
+        log.info("Scores {} for no photo (ad: {})", noPhotoScore, ad.getId());
+        ad.addScore(noPhotoScore);
     }
 
 }

@@ -139,6 +139,7 @@ public class FlatMediumDescriptionProcessorTest {
 
         processor.process(mockAd);
 
+        verify(mockAd).getId();
         verify(mockAd).addScore(20);
         verify(config).getFlatMediumDescriptionScore();
         verifyNoMoreInteractions(mockAd, config);

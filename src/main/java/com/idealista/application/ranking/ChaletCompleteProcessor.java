@@ -9,6 +9,9 @@ import com.idealista.Main.RankingConfiguration;
 import com.idealista.application.domain.Ad;
 import com.idealista.application.domain.Picture;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class ChaletCompleteProcessor extends ChaletProcessor {
 
@@ -23,7 +26,9 @@ public class ChaletCompleteProcessor extends ChaletProcessor {
 
     @Override
     public void process(Ad ad) {
-        ad.addScore(config.getChaletCompleteScore());
+        int chaletCompleteScore = config.getChaletCompleteScore();
+        log.info("Scores {} for complete Chalet (ad {})", chaletCompleteScore, ad.getId());
+        ad.addScore(chaletCompleteScore);
     }
 
     private boolean isComplete(Ad ad) {

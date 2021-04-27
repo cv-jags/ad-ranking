@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import com.idealista.Main.RankingConfiguration;
 import com.idealista.application.domain.Ad;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class ChaletDescriptionProcessor extends ChaletProcessor {
 
@@ -20,7 +23,10 @@ public class ChaletDescriptionProcessor extends ChaletProcessor {
     }
 
     public void process(Ad ad) {
-        ad.addScore(config.getChaletLargeDescriptionScore());
+        int chaletLargeDescriptionScore = config.getChaletLargeDescriptionScore();
+        log.info("Scores {} for Chalet large description (ad {})", chaletLargeDescriptionScore,
+                ad.getId());
+        ad.addScore(chaletLargeDescriptionScore);
     }
 
     private boolean isLargeDescription(String description) {

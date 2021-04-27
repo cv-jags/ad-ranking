@@ -2,6 +2,7 @@ package com.idealista.application.ranking;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -46,30 +47,31 @@ public class DescriptionProcessorTest {
 
     @Test
     public void process_AddsAlwaysDescriptionScore() {
-        when(config.getHasDescription()).thenReturn(5);
+        when(config.getHasDescriptionScore()).thenReturn(5);
         when(config.getHighlightWords()).thenReturn(Sets.newHashSet("one", "two"));
         when(mockAd.getDescription()).thenReturn("on e owt");
 
         processor.process(mockAd);
 
+        verify(mockAd).getId();
         verify(mockAd).addScore(5);
-        verify(mockAd).addScore(0);
-        verify(config).getHasDescription();
+        verify(config).getHasDescriptionScore();
         verifyNoMoreInteractions(config, mockAd);
     }
 
     @Test
     public void process_AddsHighlightWordsScoreOneTimeOnly() {
-        when(config.getHasDescription()).thenReturn(5);
+        when(config.getHasDescriptionScore()).thenReturn(5);
         when(config.getHighlightWordsScore()).thenReturn(4);
         when(config.getHighlightWords()).thenReturn(Sets.newHashSet("one", "two", "áéíóú", "none"));
         when(mockAd.getDescription()).thenReturn(" one asd áéíóú asd TWo asd. asd two");
 
         processor.process(mockAd);
 
+        verify(mockAd, times(2)).getId();
         verify(mockAd).addScore(5);
         verify(mockAd).addScore(12);
-        verify(config).getHasDescription();
+        verify(config).getHasDescriptionScore();
         verifyNoMoreInteractions(config, mockAd);
     }
 }

@@ -11,8 +11,10 @@ import com.idealista.Main.RankingConfiguration;
 import com.idealista.application.domain.Ad;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DescriptionProcessor implements RankingProcessor {
@@ -29,8 +31,14 @@ public class DescriptionProcessor implements RankingProcessor {
 
     @Override
     public void process(Ad ad) {
-        ad.addScore(config.getHasDescription());
-        ad.addScore(calculateHighlightWords(ad));
+        int hasDescriptionScore = config.getHasDescriptionScore();
+        log.info("Scores {} for description (ad: {})", hasDescriptionScore, ad.getId());
+        ad.addScore(hasDescriptionScore);
+        int highlightWordsScore = calculateHighlightWords(ad);
+        if (highlightWordsScore > 0) {
+            log.info("Scores {} for highlight words (ad: {})", highlightWordsScore, ad.getId());
+            ad.addScore(highlightWordsScore);
+        }
     }
 
     private int calculateHighlightWords(Ad ad) {

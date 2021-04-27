@@ -198,6 +198,7 @@ public class ChaletCompleteProcessorTest {
 
         processor.process(mockAd);
 
+        verify(mockAd).getId();
         verify(mockAd).addScore(40);
         verify(config).getChaletCompleteScore();
         verifyNoMoreInteractions(config, mockAd);

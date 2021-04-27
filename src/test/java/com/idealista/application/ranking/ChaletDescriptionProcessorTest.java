@@ -100,6 +100,7 @@ public class ChaletDescriptionProcessorTest {
 
         processor.process(mockAd);
 
+        verify(mockAd).getId();
         verify(mockAd).addScore(20);
         verify(config).getChaletLargeDescriptionScore();
         verifyNoMoreInteractions(mockAd, config);

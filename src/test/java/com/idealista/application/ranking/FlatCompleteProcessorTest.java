@@ -154,6 +154,7 @@ public class FlatCompleteProcessorTest {
 
         processor.process(mockAd);
 
+        verify(mockAd).getId();
         verify(mockAd).addScore(40);
         verify(config).getFlatCompleteScore();
         verifyNoMoreInteractions(config, mockAd);

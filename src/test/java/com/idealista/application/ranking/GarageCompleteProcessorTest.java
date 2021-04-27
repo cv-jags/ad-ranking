@@ -121,6 +121,7 @@ public class GarageCompleteProcessorTest {
 
         processor.process(mockAd);
 
+        verify(mockAd).getId();
         verify(mockAd).addScore(40);
         verify(config).getGarageCompleteScore();
         verifyNoMoreInteractions(config, mockAd);

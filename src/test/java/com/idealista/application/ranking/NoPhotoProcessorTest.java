@@ -52,6 +52,7 @@ public class NoPhotoProcessorTest {
 
         processor.process(mockAd);
 
+        verify(mockAd).getId();
         verify(mockAd).addScore(-10);
         verify(config).getNoPhotoScore();
         verifyNoMoreInteractions(config, mockAd);

@@ -10,7 +10,9 @@ import com.idealista.application.domain.Picture;
 import com.idealista.application.domain.PictureQuality;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class PerPhotoProcessor implements RankingProcessor {
@@ -24,7 +26,9 @@ public class PerPhotoProcessor implements RankingProcessor {
 
     @Override
     public void process(Ad ad) {
-        ad.addScore(calculatePerPhotoScore(ad));
+        int photosScore = calculatePerPhotoScore(ad);
+        log.info("Scores {} for photos (ad: {})", photosScore, ad.getId());
+        ad.addScore(photosScore);
     }
 
     private int calculatePerPhotoScore(Ad ad) {

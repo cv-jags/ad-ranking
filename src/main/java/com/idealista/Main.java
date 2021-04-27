@@ -41,7 +41,7 @@ public class Main {
         private int noPhotoScore = -10;
         private int sdPhotoScore = 10;
         private int hdPhotoScore = 20;
-        private int hasDescription = 5;
+        private int hasDescriptionScore = 5;
         private int highlightWordsScore = 5;
         private int flatMediumDescriptionMin = 20;
         private int flatMediumDescriptionScore = 10;

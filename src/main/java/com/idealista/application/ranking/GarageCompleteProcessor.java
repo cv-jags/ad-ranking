@@ -11,7 +11,9 @@ import com.idealista.application.domain.AdType;
 import com.idealista.application.domain.Picture;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class GarageCompleteProcessor implements RankingProcessor {
@@ -25,7 +27,9 @@ public class GarageCompleteProcessor implements RankingProcessor {
 
     @Override
     public void process(Ad ad) {
-        ad.addScore(config.getGarageCompleteScore());
+        int garageCompleteScore = config.getGarageCompleteScore();
+        log.info("Scores {} for complete garage (ad: {})", garageCompleteScore, ad.getId());
+        ad.addScore(garageCompleteScore);
     }
 
     private boolean isComplete(Ad ad) {

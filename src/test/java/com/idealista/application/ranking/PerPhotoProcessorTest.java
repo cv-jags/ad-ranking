@@ -60,6 +60,7 @@ public class PerPhotoProcessorTest {
 
         processor.process(mockAd);
 
+        verify(mockAd).getId();
         verify(mockAd).addScore(50);
         verify(config, times(3)).getSdPhotoScore();
         verify(config, times(1)).getHdPhotoScore();

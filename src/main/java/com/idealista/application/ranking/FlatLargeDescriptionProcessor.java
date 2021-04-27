@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 import com.idealista.Main.RankingConfiguration;
 import com.idealista.application.domain.Ad;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class FlatLargeDescriptionProcessor extends FlatProcessor implements RankingProcessor {
 
@@ -19,7 +22,10 @@ public class FlatLargeDescriptionProcessor extends FlatProcessor implements Rank
 
     @Override
     public void process(Ad ad) {
-        ad.addScore(config.getFlatLargeDescriptionScore());
+        int flatLargeDescriptionScore = config.getFlatLargeDescriptionScore();
+        log.info("Scores {} for large flat description (ad: {})", flatLargeDescriptionScore,
+                ad.getId());
+        ad.addScore(flatLargeDescriptionScore);
     }
 
     private boolean isLargeSize(String description) {
