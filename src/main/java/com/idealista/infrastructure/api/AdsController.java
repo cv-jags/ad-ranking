@@ -15,7 +15,7 @@ public class AdsController {
 
     private final AdService adService;
 
-    @GetMapping("/quality")
+    @GetMapping("/qa")
     public ResponseEntity<List<QualityAd>> qualityListing() {
         return ResponseEntity.ok(adService.getQualityAds());
     }
