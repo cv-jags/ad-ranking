@@ -55,16 +55,13 @@ Otras versiones pueden funcionar, pero no han sido probadas y pueden presentar e
 # Implementación
 
 ## Moficaciones iniciales
-Antes de implementar las historias de usuario, realizamos los siguientes campbios:
+Antes de implementar las historias de usuario se han realizado los siguientes cambios:
 
-* Actualizar la version de Spring-Boot a la última disponible.
-* Fijar la version de los plugins principales.
+* Actualizar Spring-Boot a la última versión disponible.
 * Incluir las siguientes dependencias:
     * logstash, lombok y guava para produccion, y
     * jUnit 5 y mockito para test.
 * Fijar UTC como timezone de la aplicacion.
-* Usar enumerados para *Tipo de Anuncion* y *Resolución de foto*.
-* Configuración con propiedades en lugar de yaml.
 
 ## Requisitos
 Estos son los requisitos que implementa la aplicacion, basandonos en las historias ed usuario:
@@ -98,3 +95,35 @@ Estos son los requisitos que implementa la aplicacion, basandonos en las histori
         * 40 puntos si esta completo:
             * al menos una foto, y
             * tamaño de vivienda.
+
+## Notas de diseño
+
+### Configuración
+La clase RankingConfiguration incluida dentro de Main permite configurar las puntuaciones de los distintos criterios, así como algunos de los criterios.
+
+La configuración por defecto es la descrita en las historias de usuario, por lo que no es necesario definirla.
+
+La configuración equivalente sería:
+
+```
+add.ranking.relevant-score = 40;
+add.ranking.no-photo-score = -10;
+add.ranking.sdPhoto-score = 10;
+add.ranking.hdPhoto-score = 20;
+add.ranking.has-description-score = 5;
+add.ranking.highlight-words-score = 5;
+add.ranking.highlight-words=Luminoso,Nuevo,Céntrico,Reformado,Ático
+add.ranking.flat-medium-description-min = 20;
+add.ranking.flat-medium-description-score = 10;
+add.ranking.flat-large-description-min = 50;
+add.ranking.flat-large-description-score = 30;
+add.ranking.flat-complete-score = 40;
+add.ranking.chalet-large-description-min = 20;
+add.ranking.chalet-large-description-score = 20;
+add.ranking.chalet-complete-score = 40;
+add.ranking.garage-complete-score = 40;
+```
+
+### Ranking
+Se ha usado un patron estrategia para modelar cada uno de los casos que proporciona puntos a un anuncion.
+Para el cálculo de la puntuación, todos los anuncios se evalúan contra todas las estrategias, y en caso de que cumplan la condición se añade la puntuación asociada.
